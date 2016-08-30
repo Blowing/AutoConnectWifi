@@ -5,7 +5,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.widget.Switch;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  */
 public class WifiUtil {
 
-    private WifiManager mWifiManager;
+    public WifiManager mWifiManager;
 
     private WifiInfo mWifiInfo;
 
@@ -59,13 +58,13 @@ public class WifiUtil {
         return  mWificonfiguration;
     }
 
-    public void connectConfiguration(int index) {
+    public Boolean connectConfiguration(int index) {
 
-        if(index > mWificonfiguration.size()) {
-            return;
-        }
+//        if(index > mWificonfiguration.size()) {
+//            return;
+//        }
 
-        mWifiManager.enableNetwork(mWificonfiguration.get(index).networkId, true);
+        return mWifiManager.enableNetwork(index, true);
     }
 
     public void startScan() {
@@ -139,6 +138,7 @@ public class WifiUtil {
                 configuration.wepKeys[0] = "";
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 configuration.wepTxKeyIndex = 0;
+                configuration.priority= 20000;
                 break;
             case 2:
                 configuration.hiddenSSID = true;
@@ -152,6 +152,7 @@ public class WifiUtil {
 
                 break;
             case 3:
+
                 configuration.preSharedKey = "\"" + Password + "\"";
                 configuration.hiddenSSID = true;
                 configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
@@ -161,6 +162,7 @@ public class WifiUtil {
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
                 configuration.status = WifiConfiguration.Status.ENABLED;
+                configuration.priority = 20000;
                 break;
         }
         return  configuration;
@@ -177,6 +179,8 @@ public class WifiUtil {
         }
         return null;
     }
+
+
 
 
 }
