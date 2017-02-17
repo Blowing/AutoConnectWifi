@@ -63,8 +63,11 @@ public class WifiUtil {
 //        if(index > mWificonfiguration.size()) {
 //            return;
 //        }
+        mWifiManager.enableNetwork(index, true);
+        mWifiManager.saveConfiguration();
+        mWifiManager.reconnect();
 
-        return mWifiManager.enableNetwork(index, true);
+        return true;
     }
 
     public void startScan() {
@@ -108,9 +111,12 @@ public class WifiUtil {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.toString();
     }
 
-    public void addNetWork(WifiConfiguration wifiConfiguration) {
+    public boolean  addNetWork(WifiConfiguration wifiConfiguration) {
         int wcgID = mWifiManager.addNetwork(wifiConfiguration);
-        boolean b = mWifiManager.enableNetwork(wcgID, true);
+        mWifiManager.enableNetwork(wcgID, true);
+        mWifiManager.saveConfiguration();
+        mWifiManager.reconnect();
+        return  true;
 
     }
 
@@ -138,7 +144,7 @@ public class WifiUtil {
                 configuration.wepKeys[0] = "";
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 configuration.wepTxKeyIndex = 0;
-                configuration.priority= 20000;
+                //configuration.priority= 20000;
                 break;
             case 2:
                 configuration.hiddenSSID = true;
@@ -162,7 +168,7 @@ public class WifiUtil {
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
                 configuration.status = WifiConfiguration.Status.ENABLED;
-                configuration.priority = 20000;
+                // configuration.priority = 20000;
                 break;
         }
         return  configuration;
