@@ -5,6 +5,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import java.util.List;
 
@@ -113,6 +114,7 @@ public class WifiUtil {
 
     public boolean  addNetWork(WifiConfiguration wifiConfiguration) {
         int wcgID = mWifiManager.addNetwork(wifiConfiguration);
+        Log.e("wcgID", wcgID+"true");
         mWifiManager.enableNetwork(wcgID, true);
         mWifiManager.saveConfiguration();
         mWifiManager.reconnect();
@@ -141,13 +143,17 @@ public class WifiUtil {
 
         switch (Type) {
             case 1:
-                configuration.wepKeys[0] = "";
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-                configuration.wepTxKeyIndex = 0;
-                //configuration.priority= 20000;
+//                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+//                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+//                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+//                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+//                configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+//                configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+//                configuration.status = WifiConfiguration.Status.ENABLED;
                 break;
             case 2:
-                configuration.hiddenSSID = true;
+                configuration.hiddenSSID = false;
                 configuration.wepKeys[0] = "\"" + Password +"\"";
                 configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
                 configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
@@ -160,15 +166,16 @@ public class WifiUtil {
             case 3:
 
                 configuration.preSharedKey = "\"" + Password + "\"";
-                configuration.hiddenSSID = true;
-                configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+                configuration.hiddenSSID = false;
+               // configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
                 configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
                 configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
                 configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
                 configuration.status = WifiConfiguration.Status.ENABLED;
-                // configuration.priority = 20000;
                 break;
         }
         return  configuration;
